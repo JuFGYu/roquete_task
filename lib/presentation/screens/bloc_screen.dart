@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roquete_task/config/helpers/states.dart';
 import 'package:roquete_task/presentation/blocs/rectangle_bloc/rectangle_bloc_bloc.dart';
-import 'package:roquete_task/presentation/blocs/rectangle_cubit/rectangle_cubit.dart';
 
 class BlocScreen extends StatelessWidget {
   const BlocScreen({super.key});
@@ -27,7 +26,7 @@ class _CubitRectangleView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rectangulo con Cubits'),
+        title: const Text('Rectangulo con BLoC'),
       ),
       body: Center(
         child: BlocBuilder<RectangleBlocBloc, RectangleBlocState>(

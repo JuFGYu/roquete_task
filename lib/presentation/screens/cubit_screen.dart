@@ -32,28 +32,22 @@ class _CubitRectangleView extends StatelessWidget {
         child: BlocBuilder<RectangleCubit, RectangleState>(
           builder: (context, state) {
             if ( state is RectangleInitial) {
-              return _Rectangulo(size: size, color: state.colors,);
+              return _Rectangulo(size: size, color: state.colors, isStarted: false,);
               }
             if ( state is RectangleLoading) {
-              return _Rectangulo(size: size, color: state.colors,);
+              return _Rectangulo(size: size, color: state.colors, isStarted: true);
               }
             
             if ( state is RectangleLoaded) {
-              return _Rectangulo(size: size, color: state.colors,);
+              return _Rectangulo(size: size, color: state.colors, isStarted: false);
               }
             
             if ( state is RectangleError) {
-              return _Rectangulo(size: size, color: state.colors,);
+              return _Rectangulo(size: size, color: state.colors,isStarted: false);
               }
             return const Text('Sin Estado');
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          context.read<RectangleCubit>().onClick();
-        }, 
-        child: const Text('Start'),
       ),
     );
   }
@@ -62,23 +56,46 @@ class _CubitRectangleView extends StatelessWidget {
 class _Rectangulo extends StatelessWidget {
   final Color color;
   final Size size;
+  final bool isStarted;
+  
   const _Rectangulo({
     required this.size,
-    required this.color,
+    required this.color, 
+    required this.isStarted,
   });
 
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.elasticOut,//tipo de animacion
+    return Stack(
+      children:[ 
+        
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.elasticOut,//tipo de animacion
+          width: size.width,
+          height: size.height,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10)
+          ),
+        ),
+        isStarted
+        ? const SizedBox()
+        : Positioned(
+            bottom: 20,
             width: size.width,
-            height: size.height,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10)
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+                onPressed: () => context.read<RectangleCubit>().onClick(),
+                child: const Text('Start', style: TextStyle(color: Colors.white, fontSize: 25),),
+              ),
             ),
-          );
+          ),
+        ]
+    );
   }
 }
